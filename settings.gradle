@@ -1,0 +1,2 @@
+include ':app', ':pdf', ':buildSrc'
+rootProject.name='PdfApplication'

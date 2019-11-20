@@ -1,0 +1,139 @@
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.boiqin.fat-aar'
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions{
+        exclude 'jni/arm64-v8a/libc++_shared.so'
+    }
+
+}
+configurations.embed.transitive = false
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    embed 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
+    embed 'com.github.barteksc:pdfium-android:1.9.0'
+}
+
+
+
+// 解压缩第三方jar包到某目录
+task unzipTask(type: Copy) {
+    def rootPath = rootProject.getRootDir().getAbsolutePath() + '/' + project.name
+    // 原始aar包文件
+    def zipFile = file(rootPath + '/build/outputs/aar/pdf-debug.aar')
+    // 解压缩目标目录
+    def outputDir = file(rootPath + '/build/outputs/aar/pdf-debug')
+    FileTree jarTree = zipTree(zipFile)
+    // 从jar的目录树中输出到目标目录
+    from jarTree
+    into outputDir
+}
+
+task deleteTask(type: Delete) {
+    def rootPath = rootProject.getRootDir().getAbsolutePath() + '/' + project.name
+    println(rootPath)
+    def zipFile = file(rootPath + '/build/outputs/aar/pdf-debug.aar')
+    zipFile.deleteOnExit()
+    def jniDir = file(rootPath + '/build/outputs/aar/pdf-debug/jni')
+    jniDir.deleteDir()
+}
+
+task zipTask(type: Zip) {
+
+    def rootPath = rootProject.getRootDir().getAbsolutePath() + '/' + project.name
+    from "${rootPath}/build/outputs/aar/pdf-debug"
+    baseName = 'pdf-debug'
+    extension 'aar'
+    destinationDir file("${rootPath}/build/outputs/aar")
+    doLast {
+        delete "${rootPath}/build/outputs/aar/pdf-debug"
+    }
+}
+
+zipTask.dependsOn deleteTask
+deleteTask.dependsOn unzipTask
+
+project.afterEvaluate{
+    // debug模式下删除SO库
+
+    tasks.matching { it.name == 'assemble'
+    }.each { task ->
+        task.finalizedBy(zipTask)
+    }
+
+
+//    tasks.getByName('assembleDebug') { // Hook prepareDebugDependencies任务
+//
+//
+//        doLast {
+////            def rootPath = rootProject.getRootDir().getAbsolutePath() + '/' + project.name
+////            // 原始jar包文件
+////            def zipFile = file(rootPath + '/build/outputs/aar/pdf-debug.aar')
+////            // 解压缩目标目录
+////            def outputDir = file(rootPath + '/build/outputs/aar/pdf-debug')
+////            // 文件过滤，去除部分class。这里建议写精确点，因为可能存在名称相同或相近的文件。
+////            FileTree jarTree = zipTree(zipFile)
+////            // 从jar的目录树中输出到目标目录
+////            copy {
+////                from jarTree
+////                into outputDir
+////            }
+//
+//
+//
+//
+//
+////            Task compressTask = project.tasks.create(name: 'compress', type: Copy) {
+////                //from mProject.zipTree(artifact.file.absolutePath)
+////                //into zipFolder
+////            }
+////            compressTask.dependsOn(unzip)
+//
+//            // prepareDebugDependencies任务执行完成后删除SO库
+//            // deleteSO()
+//        }
+//    }
+
+    // 打包的时候删除SO库
+    tasks.getByName('assembleRelease') {
+        it.doLast {
+            //deleteSO()
+        }
+    }
+
+
+}
