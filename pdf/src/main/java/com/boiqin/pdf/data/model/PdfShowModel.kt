@@ -10,8 +10,8 @@ import com.boiqin.pdf.utils.PdfUtils
  */
 class PdfShowModel : IModel {
     override fun loadData() {}
-    fun loadData(url: String?, onDownloadListener: OnDownloadListener?) {
-        DownloadHelper.get().download(
+    fun loadData(url: String?, onDownloadListener: OnDownloadListener) {
+        DownloadHelper.download(
             url,
             PdfUtils.PDF_DOWNLOAD_DIR,
             DownloadHelper.getNameFromUrl(url),

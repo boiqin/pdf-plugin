@@ -10,8 +10,8 @@ import com.boiqin.pdf.utils.PdfUtils
  */
 class PdfInitModel : IModel {
     override fun loadData() {}
-    fun loadData(abis: String, onDownloadListener: OnDownloadListener?) {
-        DownloadHelper.get().download(
+    fun loadData(abis: String, onDownloadListener: OnDownloadListener) {
+        DownloadHelper.download(
             PdfUtils.SO_URL + abis + PdfUtils.ZIP_SUFFIX,
             PdfUtils.SO_DOWNLOAD_DIR,
             abis + PdfUtils.ZIP_SUFFIX,
