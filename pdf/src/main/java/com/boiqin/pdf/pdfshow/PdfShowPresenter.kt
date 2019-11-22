@@ -3,9 +3,9 @@ package com.boiqin.pdf.pdfshow
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import com.boiqin.pdf.data.DownloadHelper.Companion.buildDir
-import com.boiqin.pdf.data.DownloadHelper.Companion.getNameFromUrl
-import com.boiqin.pdf.data.DownloadHelper.OnDownloadListener
+import com.boiqin.pdf.utils.DownloadHelper.Companion.buildDir
+import com.boiqin.pdf.utils.DownloadHelper.Companion.getNameFromUrl
+import com.boiqin.pdf.utils.DownloadHelper.OnDownloadListener
 import com.boiqin.pdf.data.model.PdfShowModel
 import com.boiqin.pdf.utils.Objects
 import com.boiqin.pdf.utils.PdfUtils

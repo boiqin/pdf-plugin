@@ -1,8 +1,7 @@
 package com.boiqin.pdf.data.model
 
-import com.boiqin.pdf.data.DownloadHelper
-import com.boiqin.pdf.data.DownloadHelper.OnDownloadListener
 import com.boiqin.pdf.data.IModel
+import com.boiqin.pdf.utils.DownloadHelper
 import com.boiqin.pdf.utils.PdfUtils
 
 /**
@@ -10,11 +9,12 @@ import com.boiqin.pdf.utils.PdfUtils
  */
 class PdfShowModel : IModel {
     override fun loadData() {}
-    fun loadData(url: String?, onDownloadListener: OnDownloadListener) {
+    fun loadData(url: String?, onDownloadListener: DownloadHelper.OnDownloadListener) {
         DownloadHelper.download(
             url,
             PdfUtils.PDF_DOWNLOAD_DIR,
-            DownloadHelper.getNameFromUrl(url),
+            //DownloadHelper.getNameFromUrl(url),
+            "",//TODO
             onDownloadListener
         )
     }

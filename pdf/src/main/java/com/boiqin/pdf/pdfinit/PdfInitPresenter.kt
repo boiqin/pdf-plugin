@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.boiqin.pdf.PdfActivity
-import com.boiqin.pdf.data.DownloadHelper.OnDownloadListener
+import com.boiqin.pdf.utils.DownloadHelper.OnDownloadListener
 import com.boiqin.pdf.data.model.PdfInitModel
 import com.boiqin.pdf.data.model.PdfParams
 import com.boiqin.pdf.utils.FileUtils

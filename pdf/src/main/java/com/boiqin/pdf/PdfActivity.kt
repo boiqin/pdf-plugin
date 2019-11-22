@@ -41,12 +41,12 @@ class PdfActivity : AppCompatActivity() {
         mUiHandler = Handler()
         val intent = intent
         if (intent == null) {
-            show(this, resources.getString(R.string.pdf_connect_error))
+            show(this, resources.getString(R.string.pdf__connect_error))
             return
         }
         mUrl = getIntent().getStringExtra(EXTRA_URL)
         if (TextUtils.isEmpty(mUrl)) {
-            show(this, resources.getString(R.string.pdf_connect_error))
+            show(this, resources.getString(R.string.pdf__connect_error))
             return
         }
         val title = intent.getStringExtra(EXTRA_TITLE)

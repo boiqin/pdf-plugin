@@ -1,7 +1,6 @@
 package com.boiqin.pdf.data.model
 
-import com.boiqin.pdf.data.DownloadHelper
-import com.boiqin.pdf.data.DownloadHelper.OnDownloadListener
+import com.boiqin.pdf.utils.DownloadHelper.OnDownloadListener
 import com.boiqin.pdf.data.IModel
 import com.boiqin.pdf.utils.PdfUtils
 

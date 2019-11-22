@@ -3,13 +3,15 @@ package com.boiqin.pdf
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.annotation.NonNull
 import org.json.JSONException
 import org.json.JSONObject
 
 /**
  * Created by chenbo439 on 17/6/26.
  */
-class PdfImpl : GoModule(), IPdf {
+class PdfImpl {
+
     val tag: String?
         get() = null
 
